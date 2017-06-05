@@ -1,0 +1,11 @@
+{
+	"autoload": {
+        "psr-4": {"RubtsovAV\\YandexWordstatParser\\": "src/"}
+    },
+    "require": {
+		"react/child-process": "^0.4.3"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^6.1"
+	}
+}
