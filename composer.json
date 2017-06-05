@@ -1,6 +1,6 @@
 {
 	"name" : "rubtsovav/yandex-wordstat-parser",
-	"description": "The parser of Yandex.Wordstat based on Phantomjs",
+	"description": "The Yandex.Wordstat parser based on Phantomjs",
 	"license": "MIT",
 	"authors": [
 		{
