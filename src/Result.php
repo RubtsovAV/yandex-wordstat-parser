@@ -46,7 +46,7 @@ class Result
 		int $impressions = 0, 
 		array $includingPhrases = [],
 		array $phrasesAssociations = [],
-		bool $lastUpdate = false,
+		int $lastUpdate = 0,
 		bool $nextPageExists = false
 	){
 		$this->impressions = $impressions;
