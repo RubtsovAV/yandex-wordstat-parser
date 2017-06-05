@@ -1,4 +1,18 @@
 {
+	"name" : "rubtsovav/yandex-wordstat-parser",
+	"description": "The parser of Yandex.Wordstat based on Phantomjs",
+	"license": "MIT",
+	"authors": [
+		{
+            "name": "Alexander Rubtsov",
+            "email": "RubtsovAV@gmail.com",
+            "homepage": "https://github.com/RubtsovAV/",
+            "role": "Developer"
+        }
+	],
+	"support": {
+        "issues": "https://github.com/RubtsovAV/yandex-wordstat-parser/issues"
+    },
 	"autoload": {
         "psr-4": {"RubtsovAV\\YandexWordstatParser\\": "src/"}
     },
