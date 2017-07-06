@@ -20,7 +20,7 @@ Install phantomjs [http://phantomjs.org/download.html]
     $browser->setProxy($proxy); // optional
     $browser->setTimeout(60);   // in seconds (120 by default)
     $browser->setCaptchaSolver(function($captcha) {
-        $image = $captcha->getBinaryImage();
+        $image = file_get_contents($captcha->getImageUri());
         file_put_contents(__DIR__ . '/captcha.jpg', $image);
         file_put_contents(__DIR__ . '/captchaAnswer.txt', '');
 

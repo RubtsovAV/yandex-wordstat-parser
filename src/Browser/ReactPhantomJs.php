@@ -114,7 +114,9 @@ class ReactPhantomJs extends AbstractBrowser
 		$loop = EventLoopFactory::create();
 		$this->result = null;
 		
-		$options = [];
+		$options = [
+			'--load-images' => false,
+		];
 		if ($yandexUser->getStoragePath()) {
 			$options['--cookies-file'] = $yandexUser->getStoragePath() . '/cookies.txt';
 		}

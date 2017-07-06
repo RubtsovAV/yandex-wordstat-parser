@@ -10,13 +10,13 @@
     use RubtsovAV\YandexWordstatParser\Proxy\Http as HttpProxy;
 
     $yandexUser = new YandexUser('test12345678902017', 'test1234567890', __DIR__ . '/storage');
-    $proxy = new HttpProxy('1.179.198.17', 8080); 
+    $proxy = new HttpProxy('118.70.12.171', 53281); 
 
     $browser = new ReactPhantomJs();
     $browser->setProxy($proxy);
     $browser->setTimeout(60);   // in seconds
     $browser->setCaptchaSolver(function($captcha){
-        $image = $captcha->getBinaryImage();
+        $image = file_get_contents($captcha->getImageUri());
         file_put_contents(__DIR__ . '/captcha.jpg', $image);
         file_put_contents(__DIR__ . '/captchaAnswer.txt', '');
 

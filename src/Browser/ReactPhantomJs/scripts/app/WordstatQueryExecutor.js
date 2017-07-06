@@ -17,6 +17,7 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 
 		this.webPage.open(url)
 			.then(function() {
+				that.getPhantomJsPage().render('/app/examples/loaded.jpg');
 				if (!that.isYandexWordstat()) {
 					return Promise.reject('not valid wordstat page');
 				}
@@ -91,6 +92,7 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 	},
 
 	login: function() {
+		this.getPhantomJsPage().render('/app/examples/login.jpg');
 		this.getPhantomJsPage().evaluate(function (username, password) {
     		var $username = $('#b-domik_popup-username');
     		var $password = $('#b-domik_popup-password');
@@ -128,31 +130,22 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 	},
 
 	getCaptcha: function() {
-		return this.getCaptchaImage().then(function(captchaImage){
-			var captcha = new WordstatCaptcha(captchaImage);
+		this.getPhantomJsPage().render('/app/examples/captcha.jpg');
+		return this.getCaptchaImageUri().then(function(captchaImageUri){
+			var captcha = new WordstatCaptcha(captchaImageUri);
 			return Promise.resolve(captcha);
 		});
 	},
 
-	getCaptchaImage: function() {
+	getCaptchaImageUri: function() {
 		var that = this;
-		var sourceClipRect = this.getPhantomJsPage().clipRect;
-		var clipRect = this.getPhantomJsPage().evaluate(function() {
-			var $captchaImage = $('.b-page__captcha-popup .b-popupa__image');
-			return $captchaImage[0].getBoundingClientRect();
+		var imageUri = this.getPhantomJsPage().evaluate(function() {
+			return $('.b-page__captcha-popup .b-popupa__image')[0].src;
 		});
-		if (!clipRect.width || !clipRect.height) {
-			return this.waitLoading().then(function() {
-				return that.getCaptchaImage();
-			});
+		if (!imageUri) {
+			throw new Error('The captcha image uri undefined');
 		}
-		if (clipRect.width != 200 && clipRect.height != 60) {
-			throw new Error('invalid captcha image size');
-		}
-		this.getPhantomJsPage().clipRect = clipRect;
-		var image = this.getPhantomJsPage().renderBase64('JPEG');
-		this.getPhantomJsPage().clipRect = sourceClipRect;
-		return Promise.resolve(image);
+		return Promise.resolve(imageUri);
 	},
 
 	sendCaptha: function(captcha) {

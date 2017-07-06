@@ -30,7 +30,7 @@ wordstatWebPage.on('message', function(message) {
 });
 
 wordstatWebPage.on('captcha', function(captcha) {
-	var message = new Message('captcha', captcha.getImage());
+	var message = new Message('captcha', captcha.getImageUri());
 	messageManager.sendMessage(message);
 	try {
 		var message = messageManager.waitMessage();
@@ -54,6 +54,7 @@ function lifecycle() {
 		var message = messageManager.waitMessage();
 		if (message.getType() == 'terminate') {
 			phantom.exit(0);
+			return;
 		}
 		messageHandler.handle(message).then(lifecycle, phantom.onError);
 	} catch (e) {

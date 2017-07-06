@@ -2,16 +2,16 @@ var Promise = require('./../vendor/es6-promise');
 var _ = require('./../vendor/lodash');
 var EventEmitter = require('./../vendor/EventEmitter');
 
-function WordstatCaptcha(base64Image) {
+function WordstatCaptcha(imageUri) {
 	EventEmitter.call(this);
-	this.image = base64Image;
+	this.imageUri = imageUri;
 }
 
 WordstatCaptcha.prototype = _.create(EventEmitter.prototype, {
 	'constructor': WordstatCaptcha,
 
-	getImage: function() {
-		return this.image;
+	getImageUri: function() {
+		return this.imageUri;
 	},
 
 	setAnswer: function(answer) {

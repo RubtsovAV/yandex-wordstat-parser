@@ -9,7 +9,7 @@ class Image implements CaptchaInterface
 	/**
 	 * @var string
 	 */
-	protected $base64Image;
+	protected $imageUri;
 
 	/**
 	 * @var string
@@ -17,11 +17,11 @@ class Image implements CaptchaInterface
 	protected $answer;
 
 	/**
-	 * @param string $base64Image
+	 * @param string $imageUri
 	 */
-	public function __construct(string $base64Image)
+	public function __construct(string $imageUri)
 	{
-		$this->base64Image = $base64Image;
+		$this->imageUri = $imageUri;
 	}
 
 	public function getCaptchaType()
@@ -32,17 +32,9 @@ class Image implements CaptchaInterface
 	/**
 	 * @return string
 	 */
-	public function getBase64Image()
+	public function getImageUri()
 	{
-		return $this->base64Image;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getBinaryImage()
-	{
-		return base64_decode($this->base64Image);
+		return $this->imageUri;
 	}
 
 	/**
