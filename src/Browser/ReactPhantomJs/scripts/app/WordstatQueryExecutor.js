@@ -17,7 +17,6 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 
 		this.webPage.open(url)
 			.then(function() {
-				that.getPhantomJsPage().render('/app/examples/loaded.jpg');
 				if (!that.isYandexWordstat()) {
 					return Promise.reject('not valid wordstat page');
 				}
@@ -92,7 +91,6 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 	},
 
 	login: function() {
-		this.getPhantomJsPage().render('/app/examples/login.jpg');
 		this.getPhantomJsPage().evaluate(function (username, password) {
     		var $username = $('#b-domik_popup-username');
     		var $password = $('#b-domik_popup-password');
@@ -130,7 +128,6 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 	},
 
 	getCaptcha: function() {
-		this.getPhantomJsPage().render('/app/examples/captcha.jpg');
 		return this.getCaptchaImageUri().then(function(captchaImageUri){
 			var captcha = new WordstatCaptcha(captchaImageUri);
 			return Promise.resolve(captcha);
