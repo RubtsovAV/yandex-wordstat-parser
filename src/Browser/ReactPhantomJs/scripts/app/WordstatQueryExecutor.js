@@ -198,7 +198,7 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
         var result = this.getPhantomJsPage().evaluate(function() {
         	var impressions = $('.b-word-statistics__info:first')
         		.html()
-        		.replace(/^.*&nbsp;—&nbsp;([0-9,]+).*$/, '$1')
+        		.replace(/^.*&nbsp;—&nbsp;([0-9]+)/, '$1')
         		.replace(/[^0-9]/g, '');
         	impressions = parseInt(impressions);
 
