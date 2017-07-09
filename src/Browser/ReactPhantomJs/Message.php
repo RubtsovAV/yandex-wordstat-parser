@@ -65,6 +65,9 @@ class Message
 		$line = substr($line, strlen(static::ENCODE_PREFIX));
 		$line = substr($line, 0, -strlen(static::ENCODE_SUFFIX));
 		$data = json_decode($line, true);
+		if (!$data) {
+			return false;
+		}
 		return new static($data['type'], $data['content']);
 	}
 }

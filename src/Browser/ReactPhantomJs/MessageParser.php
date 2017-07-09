@@ -27,7 +27,7 @@ class MessageParser extends EventEmitter
 	protected function parseMessage()
 	{
 		$startOfMessage = strpos($this->buffer, Message::ENCODE_PREFIX);
-		$endOfMessage = strpos($this->buffer, Message::ENCODE_SUFFIX);
+		$endOfMessage = strpos($this->buffer, Message::ENCODE_SUFFIX, $startOfMessage);
 		if ($startOfMessage === false || $endOfMessage === false) {
 			return false;
 		}
