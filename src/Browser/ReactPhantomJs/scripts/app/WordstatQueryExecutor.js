@@ -75,6 +75,9 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 				return that.collectWords();
 			});
 		} 
+		if (that.isUserBanned()) {
+			return Promise.reject('the yandex user is banned');
+		}
 		return that.parseWords();
 	},
 
@@ -160,6 +163,12 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 			.then(function() {
 				return that.waitLoading();
 			});
+	},
+
+	isUserBanned: function() {
+		return this.getPhantomJsPage().evaluate(function() {
+			return $('.control__input_name_history-answer').length > 0;
+		});
 	},
 
 	waitLoading: function() {
