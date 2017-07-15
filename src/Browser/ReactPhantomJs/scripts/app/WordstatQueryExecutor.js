@@ -211,20 +211,26 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
         		.replace(/[^0-9]/g, '');
         	impressions = parseInt(impressions);
 
-        	var includingPhrases = {};
+        	var includingPhrases = [];
         	$('.b-word-statistics__including-phrases .b-word-statistics__tr:gt(0)').each(function() {
-        		var phrase = $('.b-phrase-link__link', this).text();
+        		var words = $('.b-phrase-link__link', this).text();
         		var impressions = $('.b-word-statistics__td-number', this).text();
         		impressions = impressions.replace(/[^0-9]/g, '');
-        		includingPhrases[phrase] = parseInt(impressions);
+        		includingPhrases.push({
+        			'words': words,
+        			'impressions': parseInt(impressions),
+        		});
         	});
 
-        	var phrasesAssociations = {};
+        	var phrasesAssociations = [];
         	$('.b-word-statistics__phrases-associations .b-word-statistics__tr:gt(0)').each(function() {
-        		var phrase = $('.b-phrase-link__link', this).text();
+        		var words = $('.b-phrase-link__link', this).text();
         		var impressions = $('.b-word-statistics__td-number', this).text();
         		impressions = impressions.replace(/[^0-9]/g, '');
-        		phrasesAssociations[phrase] = parseInt(impressions);
+        		phrasesAssociations.push({
+        			'words': words,
+        			'impressions': parseInt(impressions),
+        		};
         	});
 
         	var lastUpdate = $('.b-word-statistics__last-update:first')

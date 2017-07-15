@@ -128,12 +128,24 @@ class Result
 	 * [
 	 *     'impressions' => 1000,
 	 *     'includingPhrases' => [
-	 *         'example phrase' => 101,
-	 *         'example phrase 2' => 50,
+	 *         [
+	 *             'words' => example phrase', 
+	 *             'impressions' => 101
+	 *         ],
+	 *         [
+	 *             'words' => example phrase 2', 
+	 *             'impressions' => 50
+	 *         ],
 	 *     ],
 	 *     'phrasesAssociations' => [
-	 *         'example phrase' => 101,
-	 *         'example phrase 2' => 50,
+	 *         [
+	 *             'words' => example phrase', 
+	 *             'impressions' => 101
+	 *         ],
+	 *         [
+	 *             'words' => example phrase 2', 
+	 *             'impressions' => 50
+	 *         ],
 	 *     ],
 	 *     'lastUpdate' => 1496264400,
 	 *     'nextPageExists' => true,
