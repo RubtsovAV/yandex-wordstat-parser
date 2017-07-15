@@ -230,7 +230,7 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
         		phrasesAssociations.push({
         			'words': words,
         			'impressions': parseInt(impressions),
-        		};
+        		});
         	});
 
         	var lastUpdate = $('.b-word-statistics__last-update:first')
