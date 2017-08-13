@@ -155,7 +155,10 @@ class ReactPhantomJs extends AbstractBrowser
 	    	$this->onMessage($message);
 	    });
 
-	    $phantomjs->on('error', function($error) {
+	    $phantomjs->on('error', function($error) use ($loop) {
+	    	$this->phantomjs->stop();
+	    	$loop->stop();
+
 	        throw new BrowserException($error);
 	    });
 
