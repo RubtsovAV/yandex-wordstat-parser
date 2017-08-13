@@ -6,6 +6,9 @@ var WordstatCaptcha = require('./WordstatCaptcha');
 function WordstatQueryExecutor(webPage) {
 	EventEmitter.call(this);
 	this.webPage = webPage;
+
+	var page = this.getPhantomJsPage();
+	page.resources = [];
 }
 
 WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
@@ -78,12 +81,23 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 		if (that.isUserBanned()) {
 			return Promise.reject('the yandex user is banned');
 		}
+
+		if (!that.isYandexWordstatResult()) {
+			return Promise.reject('not valid wordstat page result');
+		}
+
 		return that.parseWords();
 	},
 
 	isYandexWordstat: function() {
 		return this.getPhantomJsPage().evaluate(function() {
     		return $('.b-wordstat-content').length > 0;
+    	});
+	},
+
+	isYandexWordstatResult: function() {
+		return this.getPhantomJsPage().evaluate(function() {
+    		return $('.b-word-statistics__info').length > 0;
     	});
 	},
 
@@ -110,7 +124,6 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 				resolve(that.waitLoading());
 			};
 		});
-    	return ;
 	},
 
 	isCaptcha: function() {
@@ -199,7 +212,7 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 
 	isLoading: function() {
 		return this.getPhantomJsPage().evaluate(function() {
-			return $('.b-page__load-popup').is(':visible');
+			return document.readyState != 'complete' || $('.b-page__load-popup').is(':visible');
 		});
 	},
 
