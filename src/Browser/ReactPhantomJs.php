@@ -113,6 +113,7 @@ class ReactPhantomJs extends AbstractBrowser
 	{
 		$loop = EventLoopFactory::create();
 		$this->result = null;
+		$this->exception = null;
 		
 		$options = [
 			'--load-images' => false,
@@ -160,9 +161,7 @@ class ReactPhantomJs extends AbstractBrowser
 
 	    $phantomjs->on('error', function($error) use ($loop) {
 	    	$this->phantomjs->stop();
-	    	$loop->stop();
-
-	        throw new BrowserException($error);
+	    	$this->exception = new BrowserException($error);
 	    });
 
 	    $phantomjs->on('exit', function ($code) use ($loop) {
@@ -170,6 +169,10 @@ class ReactPhantomJs extends AbstractBrowser
 		});
 
 	    $loop->run();
+
+	    if ($this->exception) {
+	    	throw $this->exception;
+	    }
 
 	    return $this->result;
 	}
