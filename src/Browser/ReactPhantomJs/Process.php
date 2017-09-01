@@ -24,7 +24,7 @@ class Process extends EventEmitter
 		$cmd = escapeshellcmd($phantomJs);
 		$script = escapeshellarg(__DIR__ . '/' . static::SCRIPT);
 		$optionsString = $this->buildOptionsString($options);
-		return "$cmd $optionsString $script";
+		return "exec $cmd $optionsString $script";
 	}
 
 	protected function buildOptionsString($options = [])
