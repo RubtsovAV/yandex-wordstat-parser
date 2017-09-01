@@ -14,7 +14,7 @@
 
     $browser = new ReactPhantomJs();
     $browser->setProxy($proxy);
-    $browser->setTimeout(60);   // in seconds
+    $browser->setRequestTimeout(60);   // in seconds
     $browser->setCaptchaSolver(function($captcha){
         $image = file_get_contents($captcha->getImageUri());
         file_put_contents(__DIR__ . '/captcha.jpg', $image);

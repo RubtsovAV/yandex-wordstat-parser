@@ -15,8 +15,14 @@ WordstatWebPage.prototype = _.create(WebPage.prototype, {
 		return Promise.resolve();
 	},
 
+	setTimeout: function(seconds) {
+		this.timeout = seconds;
+		return Promise.resolve();
+	},
+
 	query: function(query) {
 		var that = this;
+
 		var queryExecutor = new WordstatQueryExecutor(this);
 		queryExecutor.on('captcha', function(captcha) {
 			that.emit('captcha', captcha);
@@ -24,7 +30,21 @@ WordstatWebPage.prototype = _.create(WebPage.prototype, {
 		queryExecutor.on('result', function(result) {
 			that.emit('result', result);
 		});
-		return queryExecutor.execute(query);
+
+		return new Promise(function(resolve, reject) {
+			if (that.timeout) {
+				setTimeout(function() {
+					reject('timeout');
+				}, that.timeout * 1000);
+			}
+
+			queryExecutor.execute(query).then(function(result) {
+				resolve(result);
+			}, function(reason) {
+				reject(reason);
+			});
+		});
+		
 	},
 });
 
