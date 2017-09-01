@@ -140,7 +140,7 @@ class ReactPhantomJs extends AbstractBrowser
 		$message = new PhantomJsMessage('setYandexUser', $yandexUser->toArray());
 		$phantomjs->sendMessage($message);
 
-		$message = new PhantomJsMessage('setTimeout', $this->getTimeout());
+		$message = new PhantomJsMessage('setRequestTimeout', $this->getRequestTimeout());
 		$phantomjs->sendMessage($message);
 
 		if ($proxy = $this->getProxy()) {
@@ -165,6 +165,15 @@ class ReactPhantomJs extends AbstractBrowser
 	    $phantomjs->on('exit', function ($code) use ($loop) {
 		    $loop->stop();
 		});
+
+		if ($this->getTimeout()) {
+			$loop->addTimer($this->getTimeout(), function() use ($loop) {
+			    $this->phantomjs->stop();
+	    		$loop->stop();
+
+	    		throw new BrowserException('timeout');
+			});			
+		}
 
 	    $loop->run();
 

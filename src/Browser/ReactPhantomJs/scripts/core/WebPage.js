@@ -31,8 +31,8 @@ WebPage.prototype = _.create(EventEmitter.prototype, {
 		return Promise.resolve();
 	},
 
-	setTimeout: function(seconds) {
-		this.timeout = seconds;
+	setRequestTimeout: function(seconds) {
+		this.requestTimeout = seconds;
 		return Promise.resolve();
 	},
 
@@ -40,10 +40,10 @@ WebPage.prototype = _.create(EventEmitter.prototype, {
 		var that = this;
 		var args = Array.prototype.slice.call(arguments);
 		return new Promise(function(resolve, reject){
-			if (that.timeout) {
+			if (that.requestTimeout) {
 				var timer = setTimeout(function() {
-					reject('open uri timeout');
-				}, that.timeout * 1000);
+					reject('request timeout');
+				}, that.requestTimeout * 1000);
 			}
 			args.push(function(status) {
 				if (timer) {

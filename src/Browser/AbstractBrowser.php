@@ -32,7 +32,12 @@ abstract class AbstractBrowser implements BrowserInterface
 	/**
 	 * @var null|integer
 	 */
-	protected $timeout = 120;
+	protected $timeout = 300;
+
+	/**
+	 * @var null|integer
+	 */
+	protected $requestTimeout = 120;
 
 	/**
 	 * @var \RubtsovAV\YandexWordstatParser\ProxyInterface
@@ -85,6 +90,22 @@ abstract class AbstractBrowser implements BrowserInterface
     public function getTimeout()
     {
     	return $this->timeout;
+    }
+
+    /**
+     * @param null|integer
+     */
+    public function setRequestTimeout(int $timeout = null)
+    {
+    	$this->requestTimeout = $timeout;
+    }
+
+    /**
+     * @return null|integer
+     */
+    public function getRequestTimeout()
+    {
+    	return $this->requestTimeout;
     }
 
     /**
