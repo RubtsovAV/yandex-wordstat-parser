@@ -39,7 +39,6 @@ class Guzzle6 extends AbstractBrowser
 
 		try {
 			while (true) {
-				var_dump('request', $requestOptions);
 				$response = $this->client->request(
 					'POST', 
 					'https://wordstat.yandex.ru/stat/words', 
@@ -50,6 +49,7 @@ class Guzzle6 extends AbstractBrowser
 
 				if (isset($responseData['need_login'])) {
 					$this->login($yandexUser);
+					$requestOptions = $this->createRequestOptions($query, $yandexUser);
 					continue;
 				}
 
@@ -112,6 +112,12 @@ class Guzzle6 extends AbstractBrowser
 			$requestOptions['form_params']['regions'] = $regions;
 		}
 
+		$requestOptions['headers'] += [
+			'Accept-Language' => 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
+			'X-Requested-With' => 'XMLHttpRequest',
+			'Referer' => 'https://wordstat.yandex.ru/',
+		];
+
 		return $requestOptions;
 	}
 
@@ -145,7 +151,6 @@ class Guzzle6 extends AbstractBrowser
 
 	protected function login(YandexUser $yandexUser)
 	{
-		var_dump('LOGIN');
 		$requestOptions = $this->getBaseRequestOptions($yandexUser);
 
 		$requestOptions['form_params'] = [
@@ -179,7 +184,7 @@ class Guzzle6 extends AbstractBrowser
 		foreach ($data['includingPhrases']['items'] as $phrase) {
 			$includingPhrases[] = [
 				'words' => $phrase['phrase'], 
-	 			'impressions' => $phrase['number'],
+	 			'impressions' => (int) preg_replace('#[^0-9]#', '', $phrase['number']),
 			];
 		}
 
@@ -190,7 +195,7 @@ class Guzzle6 extends AbstractBrowser
 		foreach ($data['phrasesAssociations']['items'] as $phrase) {
 			$phrasesAssociations[] = [
 				'words' => $phrase['phrase'], 
-	 			'impressions' => $phrase['number'],
+	 			'impressions' => (int) preg_replace('#[^0-9]#', '', $phrase['number']),
 			];
 		}
 
