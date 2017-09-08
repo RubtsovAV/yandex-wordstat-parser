@@ -35,7 +35,6 @@ class Guzzle6 extends AbstractBrowser
 	 */
 	public function send(Query $query, YandexUser $yandexUser)
 	{
-		$captchas = 0;
 		$requestOptions = $this->createRequestOptions($query, $yandexUser);
 
 		try {
@@ -55,9 +54,6 @@ class Guzzle6 extends AbstractBrowser
 				}
 
 				if (isset($responseData['captcha'])) {
-					if ($captchas++ >=3) {
-						throw new BrowserException('too many captchas');
-					}
 					$captchaUri = 'http:' . $responseData['captcha']['url'];
 					$captchaKey = $responseData['captcha']['key'];
 
