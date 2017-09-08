@@ -19,15 +19,13 @@
             "type": "git"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
 	"autoload": {
         "psr-4": {"RubtsovAV\\YandexWordstatParser\\": "src/"}
     },
     "require": {
 		"react/child-process": "^0.4.3",
 		"guzzlehttp/guzzle": "~6.0",
-		"kurbits/javascript": "^1.0@dev"
+		"kurbits/javascript": "^1.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^6.1"
