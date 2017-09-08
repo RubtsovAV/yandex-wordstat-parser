@@ -96,4 +96,23 @@ abstract class AbstractProxy implements ProxyInterface
 			'password' => $this->getPassword(),
 		];
 	}
+
+	/**
+	 * Converting to a string
+	 * 
+	 * @return string
+	 */
+	public function toString()
+	{
+		$proxy = strtolower($this->getType()) . '://';
+		$proxy .= $this->getHost() . ':' . $this->getPort();
+
+        if ($user = $this->getUsername()) {
+            if ($password = $this->getPassword()) {
+                $user .= ':' . $password;
+            }
+            $proxy .= $user . '@' . $proxy;
+        }
+        return $proxy;
+	}
 }

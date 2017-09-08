@@ -6,13 +6,13 @@
     use RubtsovAV\YandexWordstatParser\Query;
     use RubtsovAV\YandexWordstatParser\YandexUser;
     use RubtsovAV\YandexWordstatParser\CaptchaInterface;
-    use RubtsovAV\YandexWordstatParser\Browser\ReactPhantomJs;
+    use RubtsovAV\YandexWordstatParser\Browser\Guzzle6 as Browser;
     use RubtsovAV\YandexWordstatParser\Proxy\Http as HttpProxy;
 
-    $yandexUser = new YandexUser('test12345678902017', 'test1234567890', __DIR__ . '/storage');
-    $proxy = new HttpProxy('118.70.12.171', 53281); 
+    $yandexUser = new YandexUser('login', 'password', __DIR__ . '/storage');
+    $proxy = new HttpProxy('192.168.1.1', 80); 
 
-    $browser = new ReactPhantomJs();
+    $browser = new Browser();
     $browser->setProxy($proxy);
     $browser->setRequestTimeout(60);   // in seconds
     $browser->setCaptchaSolver(function($captcha){

@@ -8,6 +8,7 @@ RUN apt-get update \
 		curl \
 		libevent-dev \
 		libssl-dev \
+		nodejs \
 
 	# Install official PhantomJS release
 	&& mkdir /tmp/phantomjs \

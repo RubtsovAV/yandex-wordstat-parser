@@ -118,10 +118,14 @@ class ReactPhantomJs extends AbstractBrowser
 		$options = [
 			'--load-images' => false,
 		];
-		if ($yandexUser->getStoragePath()) {
+		if ($storagePath = $yandexUser->getStoragePath()) {
+			$storagePath .= '/react_phantom_js';
+			if (!is_dir($storagePath)) {
+				mkdir($storagePath, 0777, true);
+			}
 			$options['--disk-cache'] = true;
-			$options['--disk-cache-path'] = $yandexUser->getStoragePath() . '/cache';
-			$options['--cookies-file'] = $yandexUser->getStoragePath() . '/cookies.txt';
+			$options['--disk-cache-path'] = $storagePath . '/cache';
+			$options['--cookies-file'] = $storagePath . '/cookies.txt';
 		}
 		$phantomjs = $this->phantomjs = $this->createPhantomJsProcess($options);
 		$phantomjs->start($loop);
