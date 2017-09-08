@@ -19,7 +19,7 @@
     "require": {
 		"react/child-process": "^0.4.3",
 		"guzzlehttp/guzzle": "~6.0",
-		"rubtsovav/php-nodejs-wrapper": "^1.1"
+		"rubtsovav/php-nodejs-wrapper": "^1.2"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^6.1"
