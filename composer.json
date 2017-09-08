@@ -13,19 +13,13 @@
 	"support": {
         "issues": "https://github.com/RubtsovAV/yandex-wordstat-parser/issues"
     },
-    "repositories": [
-        {
-            "url": "https://github.com/RubtsovAV/php-nodejs-wrapper",
-            "type": "git"
-        }
-    ],
 	"autoload": {
         "psr-4": {"RubtsovAV\\YandexWordstatParser\\": "src/"}
     },
     "require": {
 		"react/child-process": "^0.4.3",
 		"guzzlehttp/guzzle": "~6.0",
-		"kurbits/javascript": "^1.1"
+		"rubtsovav/php-nodejs-wrapper": "^1.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^6.1"
