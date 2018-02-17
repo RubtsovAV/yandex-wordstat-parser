@@ -46,7 +46,7 @@ class Guzzle6 extends AbstractBrowser
 				);
 
 				$responseData = json_decode((string) $response->getBody(), true);
-var_dump($responseData);
+
 				if (isset($responseData['need_login'])) {
 					$this->login($yandexUser);
 					$requestOptions = $this->createRequestOptions($query, $yandexUser);
