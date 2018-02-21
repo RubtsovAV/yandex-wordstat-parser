@@ -20,9 +20,12 @@ class Guzzle6 extends AbstractBrowser
 	 */
 	protected $client;
 
-	public function __construct()
+	public function __construct(bool $ignoreSslErrors = false)
 	{
-		$this->client = new Client();
+		// Ignoring an SSL error for the traffic sniffer
+		$this->client = new Client([
+			'verify' => !$ignoreSslErrors
+		]);
 	}
 
 	/**

@@ -12,7 +12,7 @@
     $yandexUser = new YandexUser('login', 'password', __DIR__ . '/storage');
     $proxy = new HttpProxy('192.168.1.1', 80); 
 
-    $browser = new Browser();
+    $browser = new Browser(false); // True for ignoring an SSL error for the traffic sniffer
     $browser->setProxy($proxy);
     $browser->setRequestTimeout(60);   // in seconds
     $browser->setCaptchaSolver(function($captcha){
