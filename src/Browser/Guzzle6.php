@@ -36,15 +36,15 @@ class Guzzle6 extends AbstractBrowser
      *
      * @return \RubtsovAV\YandexWordstatParser\Result
      */
-    public function send(Query $query, YandexUser $yandexUser)
+    public function send(Query $query, YandexUser $yandexUser, $page = 'words')
     {
-        $requestOptions = $this->createRequestOptions($query, $yandexUser);
+        $requestOptions = $this->createRequestOptions($query, $yandexUser, $page);
 
         try {
             while (true) {
                 $response = $this->client->request(
                     'POST',
-                    'https://wordstat.yandex.ru/stat/words',
+                    'https://wordstat.yandex.ru/stat/' . $page,
                     $requestOptions
                 );
 
@@ -52,7 +52,7 @@ class Guzzle6 extends AbstractBrowser
 
                 if (isset($responseData['need_login'])) {
                     $this->login($yandexUser);
-                    $requestOptions = $this->createRequestOptions($query, $yandexUser);
+                    $requestOptions = $this->createRequestOptions($query, $yandexUser, $page);
                     continue;
                 }
 
@@ -71,7 +71,7 @@ class Guzzle6 extends AbstractBrowser
                 }
 
                 if (isset($responseData['data'])) {
-                    return $this->createResult($responseData, $yandexUser);
+                    return $this->createResult($responseData, $yandexUser, $page);
                 }
 
                 break;
@@ -93,7 +93,8 @@ class Guzzle6 extends AbstractBrowser
 
     protected function createRequestOptions(
         Query $query,
-        YandexUser $yandexUser
+        YandexUser $yandexUser,
+        $page = 'words'
     )
     {
         $requestOptions = $this->getBaseRequestOptions($yandexUser);
@@ -103,7 +104,7 @@ class Guzzle6 extends AbstractBrowser
             'filter' => 'all',
             'map' => 'world',
             'page' => $query->getPageNumber(),
-            'page_type' => 'words',
+            'page_type' => $page,
             'period' => 'monthly',
             'regions' => '',
             'sort' => 'cnt',
@@ -176,9 +177,13 @@ class Guzzle6 extends AbstractBrowser
         }
     }
 
-    protected function createResult(array $data)
+    protected function createResult(array $data, $page = 'words')
     {
         $data = $this->decodeData($data);
+
+        if ($page != 'words') {
+            return $data;
+        }
 
         $impressions = 0;
         $includingPhrases = [];
