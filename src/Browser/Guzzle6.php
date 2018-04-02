@@ -22,19 +22,19 @@ class Guzzle6 extends AbstractBrowser
 
 	public function __construct(bool $ignoreSslErrors = false)
 	{
-        // Ignoring an SSL error for the traffic sniffer
+		// Ignoring an SSL error for the traffic sniffer
 		$this->client = new Client([
-            'verify' => !$ignoreSslErrors
-        ]);
+			'verify' => !$ignoreSslErrors
+		]);
 	}
 
 	/**
 	 * Send query by the user yandex
-	 *
+	 * 
 	 * @param  \RubtsovAV\YandexWordstatParser\Query 	  $query
 	 * @param  \RubtsovAV\YandexWordstatParser\YandexUser $yandexUser
-	 *
-	 * @return \RubtsovAV\YandexWordstatParser\Result
+	 * 
+	 * @return \RubtsovAV\YandexWordstatParser\Result                      
 	 */
 	public function send(Query $query, YandexUser $yandexUser)
 	{
@@ -43,8 +43,8 @@ class Guzzle6 extends AbstractBrowser
 		try {
 			while (true) {
 				$response = $this->client->request(
-					'POST',
-					'https://wordstat.yandex.ru/stat/words',
+					'POST', 
+					'https://wordstat.yandex.ru/stat/words', 
 					$requestOptions
 				);
 
@@ -83,7 +83,7 @@ class Guzzle6 extends AbstractBrowser
 				$ex
 			);
 		}
-
+		
 		throw new WrongResponseException(
 			(string) $response->getBody(),
 			'unknown response',
@@ -92,7 +92,7 @@ class Guzzle6 extends AbstractBrowser
 	}
 
 	protected function createRequestOptions(
-		Query $query,
+		Query $query, 
 		YandexUser $yandexUser
 	){
 		$requestOptions = $this->getBaseRequestOptions($yandexUser);
@@ -164,8 +164,8 @@ class Guzzle6 extends AbstractBrowser
 		];
 
 		$response = $this->client->request(
-			'POST',
-			'https://passport.yandex.ru/passport?mode=auth&from=&retpath=https%3A%2F%2Fwordstat.yandex.ru%2F&twoweeks=yes',
+			'POST', 
+			'https://passport.yandex.ru/passport?mode=auth&from=&retpath=https%3A%2F%2Fwordstat.yandex.ru%2F&twoweeks=yes', 
 			$requestOptions
 		);
 
@@ -187,7 +187,7 @@ class Guzzle6 extends AbstractBrowser
 
 		foreach ($data['includingPhrases']['items'] as $phrase) {
 			$includingPhrases[] = [
-				'words' => $phrase['phrase'],
+				'words' => $phrase['phrase'], 
 	 			'impressions' => (int) preg_replace('#[^0-9]#', '', $phrase['number']),
 			];
 		}
@@ -198,29 +198,29 @@ class Guzzle6 extends AbstractBrowser
 
 		foreach ($data['phrasesAssociations']['items'] as $phrase) {
 			$phrasesAssociations[] = [
-				'words' => $phrase['phrase'],
+				'words' => $phrase['phrase'], 
 	 			'impressions' => (int) preg_replace('#[^0-9]#', '', $phrase['number']),
 			];
 		}
 
 		preg_match(
-			'#(?<day>\d+)\.(?<month>\d+)\.(?<year>\d+)$#',
-			$data['lastUpdate'],
+			'#(?<day>\d+)\.(?<month>\d+)\.(?<year>\d+)$#', 
+			$data['lastUpdate'], 
 			$match
 		);
 
 		$sourceTz = date_default_timezone_get();
 		date_default_timezone_set('UTC');
 		$lastUpdate = mktime(
-			0, 0, 0,
-			$match['month'],
-			$match['day'],
+			0, 0, 0, 
+			$match['month'], 
+			$match['day'], 
 			$match['year']
 		);
 		date_default_timezone_set($sourceTz);
 
 		return new Result(
-			$impressions,
+			$impressions, 
 			$includingPhrases,
 			$phrasesAssociations,
 			$lastUpdate,
@@ -238,14 +238,14 @@ class Guzzle6 extends AbstractBrowser
 			throw new BrowserException('The result decode failed', null, $ex);
 		}
 
-		$decoded = @json_decode(urldecode($decoded), true);
+		$decoded = @json_decode(urldecode($decoded), true); 
 		if (!$decoded) {
 			throw new BrowserException('The result is an invalid json');
 		}
 		if (!isset($decoded['content'])) {
 			throw new BrowserException('The result is wrong or the format has been changed');
 		}
-
+		
 		return $decoded['content'];
 	}
 }

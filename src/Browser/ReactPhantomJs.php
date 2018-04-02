@@ -49,15 +49,15 @@ class ReactPhantomJs extends AbstractBrowser
 	 */
 	protected $result;
 
-    /**
-     * @var boolean
-     */
-    protected $ignoreSslErrors = false;
+	/**
+	 * @var boolean
+	 */
+	protected $ignoreSslErrors = false;
 
-    public function __construct(bool $ignoreSslErrors = false)
-    {
-        $this->ignoreSslErrors = $ignoreSslErrors;
-    }
+	public function __construct(bool $ignoreSslErrors = false)
+	{
+		$this->ignoreSslErrors = $ignoreSslErrors;
+	}
 
 	/**
 	 * Set the path to executable file of phantomjs
@@ -139,8 +139,8 @@ class ReactPhantomJs extends AbstractBrowser
 		}
 		// Ignoring an SSL error for the traffic sniffer
 		if($this->ignoreSslErrors) {
-            $options['--ignore-ssl-errors'] = true;
-        }
+			$options['--ignore-ssl-errors'] = true;
+		}
 		$phantomjs = $this->phantomjs = $this->createPhantomJsProcess($options);
 		$phantomjs->start($loop);
 
