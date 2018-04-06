@@ -177,7 +177,7 @@ class Guzzle6 extends AbstractBrowser
         }
     }
 
-    protected function createResult(array $data, $page = 'words')
+    protected function createResult(array $data, $yandexUser, $page = 'words')
     {
         $data = $this->decodeData($data);
 
