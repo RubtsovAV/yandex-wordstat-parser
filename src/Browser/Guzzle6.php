@@ -249,7 +249,7 @@ class Guzzle6 extends AbstractBrowser
             throw new BrowserException('The result is an invalid json');
         }
         if (!isset($decoded['content'])) {
-            throw new BrowserException('The result is wrong or the format has been changed');
+            return $decoded;
         }
 
         return $decoded['content'];
