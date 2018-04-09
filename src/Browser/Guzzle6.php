@@ -2,6 +2,7 @@
 
 namespace RubtsovAV\YandexWordstatParser\Browser;
 
+use RubtsovAV\YandexWordstatParser\Exception\CaptchaNumException;
 use RubtsovAV\YandexWordstatParser\Query;
 use RubtsovAV\YandexWordstatParser\Result;
 use RubtsovAV\YandexWordstatParser\YandexUser;
@@ -19,13 +20,15 @@ class Guzzle6 extends AbstractBrowser
      * @var \GuzzleHttp\Client
      */
     protected $client;
+    private $limitCaptcha;
 
-    public function __construct(bool $ignoreSslErrors = false)
+    public function __construct(bool $ignoreSslErrors = false, int $limitCaptcha = 10)
     {
         // Ignoring an SSL error for the traffic sniffer
         $this->client = new Client([
             'verify' => !$ignoreSslErrors
         ]);
+        $this->limitCaptcha = $limitCaptcha;
     }
 
     /**
@@ -34,11 +37,15 @@ class Guzzle6 extends AbstractBrowser
      * @param  \RubtsovAV\YandexWordstatParser\Query $query
      * @param  \RubtsovAV\YandexWordstatParser\YandexUser $yandexUser
      *
-     * @return \RubtsovAV\YandexWordstatParser\Result
+     * @param string $page
+     * @return array
+     * @throws BrowserException
+     * @throws WrongResponseException
      */
     public function send(Query $query, YandexUser $yandexUser, $page = 'words')
     {
         $requestOptions = $this->createRequestOptions($query, $yandexUser, $page);
+        $captcha = 0;
 
         try {
             while (true) {
@@ -57,6 +64,9 @@ class Guzzle6 extends AbstractBrowser
                 }
 
                 if (isset($responseData['captcha'])) {
+                    if ($captcha >= $this->limitCaptcha) {
+                        throw new CaptchaNumException('Превышен лимит каптчи');
+                    }
                     $captchaUri = 'http:' . $responseData['captcha']['url'];
                     $captchaKey = $responseData['captcha']['key'];
 
@@ -67,11 +77,12 @@ class Guzzle6 extends AbstractBrowser
 
                     $requestOptions['form_params']['captcha_key'] = $captchaKey;
                     $requestOptions['form_params']['captcha_value'] = $captcha->getAnswer();
+                    $captcha++;
                     continue;
                 }
 
                 if (isset($responseData['data'])) {
-                    return $this->createResult($responseData, $yandexUser, $page);
+                    return [$this->createResult($responseData, $yandexUser, $page), $captcha];
                 }
 
                 break;

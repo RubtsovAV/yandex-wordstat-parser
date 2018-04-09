@@ -47,7 +47,7 @@ class Parser
 
     /**
      * @param  Query $query
-     *
+     * @param string $page
      * @return Result
      */
     public function query(Query $query, $page = 'words')
