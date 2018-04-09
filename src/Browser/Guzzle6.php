@@ -45,7 +45,7 @@ class Guzzle6 extends AbstractBrowser
     public function send(Query $query, YandexUser $yandexUser, $page = 'words')
     {
         $requestOptions = $this->createRequestOptions($query, $yandexUser, $page);
-        $captcha = 0;
+        $captchaCount = 0;
 
         try {
             while (true) {
@@ -64,7 +64,7 @@ class Guzzle6 extends AbstractBrowser
                 }
 
                 if (isset($responseData['captcha'])) {
-                    if ($captcha >= $this->limitCaptcha) {
+                    if ($captchaCount >= $this->limitCaptcha) {
                         throw new CaptchaNumException('Превышен лимит каптчи');
                     }
                     $captchaUri = 'http:' . $responseData['captcha']['url'];
@@ -77,12 +77,12 @@ class Guzzle6 extends AbstractBrowser
 
                     $requestOptions['form_params']['captcha_key'] = $captchaKey;
                     $requestOptions['form_params']['captcha_value'] = $captcha->getAnswer();
-                    $captcha++;
+                    $captchaCount++;
                     continue;
                 }
 
                 if (isset($responseData['data'])) {
-                    return [$this->createResult($responseData, $yandexUser, $page), $captcha];
+                    return [$this->createResult($responseData, $yandexUser, $page), $captchaCount];
                 }
 
                 break;
