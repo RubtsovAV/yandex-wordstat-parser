@@ -47,6 +47,9 @@ class Guzzle6 extends AbstractBrowser
         $requestOptions = $this->createRequestOptions($query, $yandexUser, $page);
         $captchaCount = 0;
 
+        $response = null;
+        $responseData = null;
+
         try {
             while (true) {
                 $response = $this->client->request(
@@ -96,9 +99,9 @@ class Guzzle6 extends AbstractBrowser
         }
 
         throw new WrongResponseException(
-            (string)$response->getBody(),
+            $response ? (string)$response->getBody() : '',
             'unknown response',
-            $responseData->getStatusCode()
+            $response ? $response->getStatusCode() : ''
         );
     }
 
