@@ -58,7 +58,10 @@ class Guzzle6 extends AbstractBrowser
                     $requestOptions
                 );
 
-                $responseData = json_decode((string)$response->getBody(), true);
+                $responseData = @json_decode((string)$response->getBody(), true);
+                if (json_last_error()) {
+                    break;
+                }
 
                 if (isset($responseData['need_login'])) {
                     $this->login($yandexUser);
@@ -100,7 +103,8 @@ class Guzzle6 extends AbstractBrowser
 
         throw new WrongResponseException(
             $response ? (string)$response->getBody() : '',
-            'unknown response',
+            'Пришел неверный ответ от wordstat. Возможные причины: 1) временный сбой wordstat Яндекс; 2) аккаунт яндекст забанен. ' .
+            'Если данная ошибка повторяется после повторного запуска задчи, то обратитесь к админстрации.',
             $response ? $response->getStatusCode() : ''
         );
     }
