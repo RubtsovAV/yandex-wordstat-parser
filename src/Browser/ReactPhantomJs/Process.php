@@ -70,10 +70,10 @@ class Process extends EventEmitter
 
 	public function stop() 
 	{
-		$this->process->terminate();
-		
-		$message = new Message('terminate');
-		$this->sendMessage($message);
+        $this->process->stdin->close();
+        $this->process->stdout->close();
+        $this->process->stderr->close();
+        $this->process->terminate(SIGKILL);
 	}
 
 	public function sendMessage(Message $message)

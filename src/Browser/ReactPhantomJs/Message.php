@@ -6,8 +6,8 @@ use RubtsovAV\YandexWordstatParser\Browser\ReactPhantomJs\Exception\InvalidMessa
 
 class Message 
 {
-	const ENCODE_PREFIX = '[MESSAGE] ';
-	const ENCODE_SUFFIX = PHP_EOL;
+	const ENCODE_PREFIX = '[MESSAGE]';
+	const ENCODE_SUFFIX = '[/MESSAGE]' . PHP_EOL;
 
 	/**
 	 * @var string

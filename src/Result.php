@@ -39,9 +39,15 @@ class Result
 	 */
 	protected $nextPageExists = false;
 
-	/**
-	 * @param array $content
-	 */
+    /**
+     * Result constructor.
+     *
+     * @param int $impressions
+     * @param array $includingPhrases
+     * @param array $phrasesAssociations
+     * @param int $lastUpdate
+     * @param bool $nextPageExists
+     */
 	public function __construct(
 		int $impressions = 0, 
 		array $includingPhrases = [],
@@ -59,7 +65,7 @@ class Result
 	/**
 	 * Returns number of impressions per month for the requested words
 	 * 
-	 * @var int 
+	 * @return int
 	 */
 	public function getImpressions()
 	{
@@ -69,7 +75,7 @@ class Result
 	/**
 	 * Return other searches containing the requested words
 	 * 
-	 * @var array
+	 * @return array
 	 */
 	public function getIncludingPhrases()
 	{
@@ -79,7 +85,7 @@ class Result
 	/**
 	 * Return requests, similar to the requested words
 	 * 
-	 * @var array
+	 * @return array
 	 */
 	public function getPhrasesAssociations()
 	{

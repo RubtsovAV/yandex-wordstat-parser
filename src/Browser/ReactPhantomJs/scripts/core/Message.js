@@ -5,8 +5,8 @@ function Message(type, content) {
 	this.content = content;
 }
 
-Message.ENCODE_PREFIX = '[MESSAGE] ';
-Message.ENCODE_SUFFIX = "\n";
+Message.ENCODE_PREFIX = '[MESSAGE]';
+Message.ENCODE_SUFFIX = "[/MESSAGE]\n";
 
 Message.prototype = {
 	getType: function() {
