@@ -105,14 +105,17 @@ abstract class AbstractProxy implements ProxyInterface
 	public function toString()
 	{
 		$proxy = strtolower($this->getType()) . '://';
-		$proxy .= $this->getHost() . ':' . $this->getPort();
 
         if ($user = $this->getUsername()) {
+            $proxy .= $user;
             if ($password = $this->getPassword()) {
-                $user .= ':' . $password;
+                $proxy .=  ':' . $password;
             }
-            $proxy .= $user . '@' . $proxy;
+            $proxy .= '@';
         }
+
+        $proxy .= $this->getHost() . ':' . $this->getPort();
+
         return $proxy;
 	}
 }

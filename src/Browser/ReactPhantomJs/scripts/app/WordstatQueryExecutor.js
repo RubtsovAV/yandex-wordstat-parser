@@ -158,6 +158,7 @@ WordstatQueryExecutor.prototype = _.create(EventEmitter.prototype, {
 		if (!imageUri) {
 			throw new Error('The captcha image uri undefined');
 		}
+
 		return Promise.resolve(imageUri);
 	},
 

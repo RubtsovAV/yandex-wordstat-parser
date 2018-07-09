@@ -84,7 +84,7 @@ class Guzzle6 extends AbstractBrowser
 		throw new WrongResponseException(
 			(string) $response->getBody(),
 			'unknown response',
-			$responseData->getStatusCode()
+            $response ? $response->getStatusCode() : 0
 		);
 	}
 

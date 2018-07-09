@@ -178,6 +178,10 @@ class ReactPhantomJs extends AbstractBrowser
 	    	throw $this->exception;
 	    }
 
+	    if (!$this->result) {
+            throw new BrowserException('unknown error');
+        }
+
 	    return $this->result;
 	}
 
