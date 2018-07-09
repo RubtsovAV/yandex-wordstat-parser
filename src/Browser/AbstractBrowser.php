@@ -151,19 +151,19 @@ abstract class AbstractBrowser implements BrowserInterface
 	}
 
 	/**
-	 * @param  \RubtsovAV\YandexWordstatParser\CaptchaInterface $сaptcha
+	 * @param  \RubtsovAV\YandexWordstatParser\CaptchaInterface $captcha
 	 *
 	 * @throws \RubtsovAV\YandexWordstatParser\Exception\BrowserException
      *  When the captcha solver is not setted
 	 * 
 	 * @return bool True - captcha was successfully solved
 	 */
-	public function solveCaptcha(CaptchaInterface $сaptcha)
+	public function solveCaptcha(CaptchaInterface $captcha)
 	{
 		if (!$this->captchaSolver) {
 			throw new BrowserException('The captcha solver is not setted');
 		}
 		$func = $this->captchaSolver;
-		return $func($сaptcha);
+		return $func($captcha);
 	}
 }

@@ -1,5 +1,5 @@
 {
-	"name" : "rubtsovav/yandex-wordstat-parser",
+	"name" : "BaHeK/yandex-wordstat-parser",
 	"description": "The Yandex.Wordstat parser based on Phantomjs",
 	"license": "MIT",
 	"authors": [
@@ -19,9 +19,15 @@
     "require": {
 		"react/child-process": "^0.4.3",
 		"guzzlehttp/guzzle": "~6.0",
-		"rubtsovav/php-nodejs-wrapper": "^1.2"
+		"BaHeK/php-nodejs-wrapper": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^6.1"
-	}
+	},
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/BaHeK1994/php-nodejs-wrapper.git"
+        }
+    ]
 }
