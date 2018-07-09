@@ -12,39 +12,39 @@ use RubtsovAV\YandexWordstatParser\Exception\BrowserException;
 
 abstract class AbstractBrowser implements BrowserInterface
 {
-	const BASE_URI = 'https://wordstat.yandex.ru/#!/';
+    const BASE_URI = 'https://wordstat.yandex.ru/#!/';
 
-	/**
-	 * @var callable
-	 */
-	protected $captchaSolver;
+    /**
+     * @var callable
+     */
+    protected $captchaSolver;
 
-	/**
-	 * @var string
-	 */
-	protected $userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0';
+    /**
+     * @var string
+     */
+    protected $userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0';
 
-	/**
-	 * @var string
-	 */
-	protected $acceptLanguage = 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3';
-	
-	/**
-	 * @var null|integer
-	 */
-	protected $timeout = 300;
+    /**
+     * @var string
+     */
+    protected $acceptLanguage = 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3';
 
-	/**
-	 * @var null|integer
-	 */
-	protected $requestTimeout = 120;
+    /**
+     * @var null|integer
+     */
+    protected $timeout = 300;
 
-	/**
-	 * @var \RubtsovAV\YandexWordstatParser\ProxyInterface
-	 */
-	protected $proxy;
+    /**
+     * @var null|integer
+     */
+    protected $requestTimeout = 120;
 
-	/**
+    /**
+     * @var \RubtsovAV\YandexWordstatParser\ProxyInterface
+     */
+    protected $proxy;
+
+    /**
      * @param string $userAgent
      */
     public function setUserAgent(string $userAgent)
@@ -81,7 +81,7 @@ abstract class AbstractBrowser implements BrowserInterface
      */
     public function setTimeout(int $timeout = null)
     {
-    	$this->timeout = $timeout;
+        $this->timeout = $timeout;
     }
 
     /**
@@ -89,7 +89,7 @@ abstract class AbstractBrowser implements BrowserInterface
      */
     public function getTimeout()
     {
-    	return $this->timeout;
+        return $this->timeout;
     }
 
     /**
@@ -97,7 +97,7 @@ abstract class AbstractBrowser implements BrowserInterface
      */
     public function setRequestTimeout(int $timeout = null)
     {
-    	$this->requestTimeout = $timeout;
+        $this->requestTimeout = $timeout;
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class AbstractBrowser implements BrowserInterface
      */
     public function getRequestTimeout()
     {
-    	return $this->requestTimeout;
+        return $this->requestTimeout;
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class AbstractBrowser implements BrowserInterface
      */
     public function setProxy(ProxyInterface $proxy = null)
     {
-    	$this->proxy = $proxy;
+        $this->proxy = $proxy;
     }
 
     /**
@@ -121,49 +121,49 @@ abstract class AbstractBrowser implements BrowserInterface
      */
     public function getProxy()
     {
-    	return $this->proxy;
+        return $this->proxy;
     }
 
     /**
-	 * Send the query
-	 * 
-	 * @param  \RubtsovAV\YandexWordstatParser\Query 	  $query
-	 * @param  \RubtsovAV\YandexWordstatParser\YandexUser $yandexUser
-	 * 
-	 * @return \RubtsovAV\YandexWordstatParser\Result                      
-	 */
-	abstract public function send(Query $query, YandexUser $yandexUser);
+     * Send the query
+     *
+     * @param  \RubtsovAV\YandexWordstatParser\Query $query
+     * @param  \RubtsovAV\YandexWordstatParser\YandexUser $yandexUser
+     *
+     * @return \RubtsovAV\YandexWordstatParser\Result
+     */
+    abstract public function send(Query $query, YandexUser $yandexUser);
 
-	/**
-	 * @param callable $captchaSolver
-	 */
-	public function setCaptchaSolver(callable $captchaSolver)
-	{
-		$this->captchaSolver = $captchaSolver;
-	}
+    /**
+     * @param callable $captchaSolver
+     */
+    public function setCaptchaSolver(callable $captchaSolver)
+    {
+        $this->captchaSolver = $captchaSolver;
+    }
 
-	/**
-	 * @param callable|null
-	 */
-	public function getCaptchaSolver()
-	{
-		return $this->captchaSolver;
-	}
+    /**
+     * @return callable|null
+     */
+    public function getCaptchaSolver()
+    {
+        return $this->captchaSolver;
+    }
 
-	/**
-	 * @param  \RubtsovAV\YandexWordstatParser\CaptchaInterface $сaptcha
-	 *
-	 * @throws \RubtsovAV\YandexWordstatParser\Exception\BrowserException
+    /**
+     * @param  \RubtsovAV\YandexWordstatParser\CaptchaInterface $сaptcha
+     *
+     * @throws \RubtsovAV\YandexWordstatParser\Exception\BrowserException
      *  When the captcha solver is not setted
-	 * 
-	 * @return bool True - captcha was successfully solved
-	 */
-	public function solveCaptcha(CaptchaInterface $сaptcha)
-	{
-		if (!$this->captchaSolver) {
-			throw new BrowserException('The captcha solver is not setted');
-		}
-		$func = $this->captchaSolver;
-		return $func($сaptcha);
-	}
+     *
+     * @return bool True - captcha was successfully solved
+     */
+    public function solveCaptcha(CaptchaInterface $сaptcha)
+    {
+        if (!$this->captchaSolver) {
+            throw new BrowserException('The captcha solver is not set');
+        }
+        $func = $this->captchaSolver;
+        return $func($сaptcha);
+    }
 }

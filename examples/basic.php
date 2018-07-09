@@ -6,7 +6,7 @@
     use RubtsovAV\YandexWordstatParser\Query;
     use RubtsovAV\YandexWordstatParser\YandexUser;
     use RubtsovAV\YandexWordstatParser\CaptchaInterface;
-    use RubtsovAV\YandexWordstatParser\Browser\Guzzle6 as Browser;
+    use RubtsovAV\YandexWordstatParser\Browser\ReactPhantomJs as Browser;
     use RubtsovAV\YandexWordstatParser\Proxy\Http as HttpProxy;
 
     $yandexUser = new YandexUser('login', 'password', __DIR__ . '/storage');

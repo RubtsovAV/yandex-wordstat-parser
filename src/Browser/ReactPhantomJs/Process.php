@@ -8,76 +8,115 @@ use React\EventLoop\LoopInterface as EventLoopInterface;
 
 class Process extends EventEmitter
 {
-	const SCRIPT = 'scripts/index.js';
+    const SCRIPT = 'scripts/index.js';
 
-	protected $process;
+    /**
+     * @var ReactProcess
+     */
+    protected $process;
 
-	public function __construct($phantomJs, $options = [])
-	{
-		$command = $this->buildCommand($phantomJs, $options);
-		$workingDirectory = realpath(__DIR__ . '/scripts');
-		$this->process = new ReactProcess($command, $workingDirectory);
-	}
+    /**
+     * Process constructor.
+     *
+     * @param string $phantomJs
+     * @param array $options
+     */
+    public function __construct($phantomJs, $options = [])
+    {
+        $command = $this->buildCommand($phantomJs, $options);
+        $workingDirectory = realpath(__DIR__ . '/scripts');
+        $this->process = new ReactProcess($command, $workingDirectory);
+    }
 
-	protected function buildCommand($phantomJs, $options = [])
-	{
-		$cmd = escapeshellcmd($phantomJs);
-		$script = escapeshellarg(__DIR__ . '/' . static::SCRIPT);
-		$optionsString = $this->buildOptionsString($options);
-		return "exec $cmd $optionsString $script";
-	}
+    /**
+     *
+     */
+    public function __destruct()
+    {
+        $this->stop();
+    }
 
-	protected function buildOptionsString($options = [])
-	{
-		$optionsString = [];
-		foreach ($options as $name => $value) {
-			switch (gettype($value)) {
-				case 'NULL':
-					$optionsString[] = escapeshellarg($name);
-					break;
+    /**
+     * @param string $phantomJs
+     * @param array $options
+     *
+     * @return string
+     */
+    protected function buildCommand($phantomJs, $options = [])
+    {
+        $cmd = escapeshellcmd($phantomJs);
+        $script = escapeshellarg(__DIR__ . '/' . static::SCRIPT);
+        $optionsString = $this->buildOptionsString($options);
+        return "exec $cmd $optionsString $script";
+    }
 
-				case 'boolean':
-					$optionsString[] = escapeshellarg($name) . '=' . ($value ? 'true' : 'false');
-					break;
-				
-				default:
-					$optionsString[] = escapeshellarg($name) . '=' . escapeshellarg($value);
-					break;
-			}
-		}
-		return implode(' ', $optionsString);
-	}
+    /**
+     * @param array $options
+     *
+     * @return string
+     */
+    protected function buildOptionsString($options = [])
+    {
+        $optionsString = [];
+        foreach ($options as $name => $value) {
+            switch (gettype($value)) {
+                case 'NULL':
+                    $optionsString[] = escapeshellarg($name);
+                    break;
 
-	public function start(EventLoopInterface $loop)
-	{
-		$this->process->start($loop);
+                case 'boolean':
+                    $optionsString[] = escapeshellarg($name) . '=' . ($value ? 'true' : 'false');
+                    break;
 
-		$this->process->on('exit', function ($code) {
-			$this->emit('exit', [$code]);
-		});
+                default:
+                    $optionsString[] = escapeshellarg($name) . '=' . escapeshellarg($value);
+                    break;
+            }
+        }
+        return implode(' ', $optionsString);
+    }
 
-		$this->process->stderr->on('data', function ($data) {
-			$this->emit('error', [$data]);
-		});
+    /**
+     * @param EventLoopInterface $loop
+     *
+     * @throws \React\ChildProcess\RuntimeException
+     */
+    public function start(EventLoopInterface $loop)
+    {
+        $this->process->start($loop);
 
-		$parser = new MessageParser();
-        $parser->on('message', function(Message $message) {
-        	$this->emit('message', [$message]);
+        $this->process->on('exit', function ($code) {
+            $this->emit('exit', [$code]);
+        });
+
+        $this->process->stderr->on('data', function ($data) {
+            $this->emit('error', [$data]);
+        });
+
+        $parser = new MessageParser();
+        $parser->on('message', function (Message $message) {
+            $this->emit('message', [$message]);
         });
         $listener = [$parser, 'feed'];
-		$this->process->stdout->on('data', $listener);
-	}
+        $this->process->stdout->on('data', $listener);
+    }
 
-	public function stop() 
-	{
-        $this->process->stdin->close();
-        $this->process->stdout->close();
-        $this->process->stderr->close();
-        $this->process->terminate(SIGKILL);
-	}
+    /**
+     *
+     */
+    public function stop()
+    {
+        if ($this->process->isRunning()) {
+            $this->process->terminate();
+            pcntl_waitpid($this->process->getPid(), $status);
+        }
+    }
 
-	public function sendMessage(Message $message)
-	{
-		$this->process->stdin->write($message->encode());
-	}
+    /**
+     * @param Message $message
+     */
+    public function sendMessage(Message $message)
+    {
+        $this->process->stdin->write($message->encode());
+    }
 }
